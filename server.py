@@ -54,7 +54,7 @@ def get_light_status():
     return jsonify({'status': current_light_value})
 
 
-@app.route("/light/<int:new_light_value>", methods=['GET'])
+@app.route("/light/<float:new_light_value>", methods=['GET'])
 def set_light_value(new_light_value):
     global current_light_value
     current_light_value = new_light_value
