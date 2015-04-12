@@ -12,19 +12,12 @@ current_fan_status = 0
 current_irrigation_status = 0
 current_light_value = 0
 
-led = mraa.Gpio(4)
-led.dir(mraa.DIR_OUT)
+irrigation = mraa.Gpio(4)
+irrigation.dir(mraa.DIR_OUT)
 
-light = mraa.Pwm(3)
-light.period_us(700)
-light.enable(True)
-
-# lcd = rgb_lcd()
-# lcd.begin(16, 2)
-#
-# lcd.setRGB(0, 0, 0)
-# lcd.write(str('Hello World'))
-# lcd.scrollDisplayLeft()
+# light = mraa.Pwm(3)
+# light.period_us(700)
+# light.enable(True)
 
 lcdDisplay = lcd.Jhd1313m1(0, 0x3E, 0x62)
 
@@ -61,6 +54,7 @@ def set_irrigation_status(new_irrigation_status):
     else:
         current_irrigation_status = 0
 
+    irrigation.write(current_irrigation_status)
     return jsonify({'status': current_irrigation_status}), 201
 
 
@@ -69,24 +63,19 @@ def get_light_status():
     return jsonify({'status': current_light_value})
 
 
-@app.route("/light/<float:new_light_value>", methods=['GET'])
+@app.route("/light/<int:new_light_value>", methods=['GET'])
 def set_light_value(new_light_value):
     global current_light_value
     current_light_value = new_light_value
-    light.write(current_light_value)
+
+    lcdDisplay.write("Illuminazione " + 255 / current_light_value)
+
+    lcdDisplay.setCursor(0, 0)
+    lcdDisplay.setColor(0, 255 / current_light_value, 0)
+
+
+
     return jsonify({'status': current_light_value}), 201
-
-
-@app.route("/led/on", methods=['GET'])
-def turn_on_led():
-    led.write(1)
-    return jsonify({'status': 'LED ON'}), 201
-
-
-@app.route("/led/off", methods=['GET'])
-def turn_off_led():
-    led.write(0)
-    return jsonify({'status': 'LED OFF'}), 201
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
