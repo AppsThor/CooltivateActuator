@@ -3,6 +3,7 @@
 __author__ = 'Samuele'
 
 from flask import Flask, jsonify
+import pyupm_i2clcd as lcd
 import mraa
 
 app = Flask(__name__)
@@ -18,6 +19,15 @@ light = mraa.Pwm(3)
 light.period_us(700)
 light.enable(True)
 
+# lcd = rgb_lcd()
+# lcd.begin(16, 2)
+#
+# lcd.setRGB(0, 0, 0)
+# lcd.write(str('Hello World'))
+# lcd.scrollDisplayLeft()
+
+lcdDisplay = lcd.Jhd1313m1(0, 0x3E, 0x62)
+
 @app.route("/fan", methods=['GET'])
 def get_fan_status():
     return jsonify({'status': current_fan_status})
@@ -28,8 +38,13 @@ def set_fan_status(new_fan_status):
     global current_fan_status
     if new_fan_status > 0:
         current_fan_status = 1
+        lcdDisplay.setCursor(0, 0)
+        lcdDisplay.write("Ventola accesa")
     else:
         current_fan_status = 0
+        lcdDisplay.setCursor(0, 0)
+        lcdDisplay.write("Ventola spenta")
+
     return jsonify({'status': current_fan_status}), 201
 
 
