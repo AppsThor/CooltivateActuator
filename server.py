@@ -68,12 +68,11 @@ def set_light_value(new_light_value):
     global current_light_value
     current_light_value = new_light_value
 
-    lcdDisplay.write("Illuminazione " + 255 / current_light_value)
+    lcdDisplay.write("Illuminazione ")
 
     lcdDisplay.setCursor(0, 0)
-    lcdDisplay.setColor(0, 255 / current_light_value, 0)
-
-
+    value = (255 / 8) * current_light_value
+    lcdDisplay.setColor(value, value, value)
 
     return jsonify({'status': current_light_value}), 201
 
