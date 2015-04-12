@@ -15,9 +15,9 @@ current_light_value = 0
 irrigation = mraa.Gpio(4)
 irrigation.dir(mraa.DIR_OUT)
 
-# light = mraa.Pwm(3)
-# light.period_us(700)
-# light.enable(True)
+fan = mraa.Pwm(3)
+fan.period_us(700)
+fan.enable(True)
 
 lcdDisplay = lcd.Jhd1313m1(0, 0x3E, 0x62)
 
@@ -33,8 +33,10 @@ def set_fan_status(new_fan_status):
         current_fan_status = 1
         lcdDisplay.setCursor(0, 0)
         lcdDisplay.write("Ventola accesa")
+        fan.write(4)
     else:
         current_fan_status = 0
+        fan.write(0)
         lcdDisplay.setCursor(0, 0)
         lcdDisplay.write("Ventola spenta")
 
