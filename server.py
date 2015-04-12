@@ -14,6 +14,9 @@ current_light_value = 0
 led = mraa.Gpio(4)
 led.dir(mraa.DIR_OUT)
 
+light = mraa.Pwm(3)
+light.period_us(700)
+light.enable(True)
 
 @app.route("/fan", methods=['GET'])
 def get_fan_status():
@@ -55,6 +58,7 @@ def get_light_status():
 def set_light_value(new_light_value):
     global current_light_value
     current_light_value = new_light_value
+    light.write(current_light_value)
     return jsonify({'status': current_light_value}), 201
 
 
