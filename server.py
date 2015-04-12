@@ -4,6 +4,7 @@ __author__ = 'Samuele'
 
 from flask import Flask, jsonify
 import mraa
+import SocketServer
 
 app = Flask(__name__)
 
@@ -59,4 +60,10 @@ def turn_off_led():
     return jsonify({'status', 'LED OFF'}), 201
 
 if __name__ == "__main__":
-    app.run()
+    HOST, PORT = "192.168.3.7", 5000
+    # Create the server, binding to localhost on port 5000
+    server = SocketServer.TCPServer((HOST, PORT))
+
+    # Activate the server; this will keep running until you
+    # interrupt the program with Ctrl-C
+    server.serve_forever()
