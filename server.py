@@ -40,18 +40,6 @@ def set_fan_status(new_fan_status):
 
     return jsonify({'status': current_fan_status}), 201
 
-@app.route("/fan/on", methods=['GET'])
-def turn_on_fan():
-    while current_fan_status > 0:
-
-    return jsonify({'status': 'LED ON'}), 201
-
-
-@app.route("/fan/off", methods=['GET'])
-def turn_off_fan():
-    led.write(0)
-    return jsonify({'status': 'LED OFF'}), 201
-
 
 @app.route("/irrigation", methods=['GET'])
 def get_irrigation_status():
