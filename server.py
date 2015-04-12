@@ -20,7 +20,7 @@ def get_fan_status():
     return jsonify({'status': current_fan_status})
 
 
-@app.route("/fan/<int:new_fan_status>", methods=['POST'])
+@app.route("/fan/<int:new_fan_status>", methods=['GET'])
 def set_fan_status(new_fan_status):
     global current_fan_status
     if new_fan_status > 0:
@@ -35,7 +35,7 @@ def get_irrigation_status():
     return jsonify({'status': current_irrigation_status})
 
 
-@app.route("/irrigation/<int:new_irrigation_status>", methods=['POST'])
+@app.route("/irrigation/<int:new_irrigation_status>", methods=['GET'])
 def set_irrigation_status(new_irrigation_status):
     if new_irrigation_status > 0:
         global current_irrigation_status
@@ -51,7 +51,7 @@ def get_light_status():
     return jsonify({'status': current_light_value})
 
 
-@app.route("/light/<int:new_light_value>", methods=['POST'])
+@app.route("/light/<int:new_light_value>", methods=['GET'])
 def set_light_value(new_light_value):
     global current_light_value
     current_light_value = new_light_value
